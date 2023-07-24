@@ -16,11 +16,11 @@ def handler(job):
 
     time.sleep(job_input.get('mock_delay', 0))
 
-    if job_input.get('mock_error', False):
-        raise Exception('Mock error')
-
     if job_input.get('mock_crash', False):
         os._exit(1)
+
+    if job_input.get('mock_error', False):
+        raise Exception('Mock error')
 
     return job_input.get('mock_return', 'Hello World!')
 
