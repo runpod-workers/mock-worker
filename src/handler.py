@@ -1,21 +1,28 @@
-#!/usr/bin/env python
-''' Contains the handler function that will be called by the serverless. '''
+'''
+IMPORTANT: This file is only used for testing purposes.
+'''
+
+import os
+import time
 
 import runpod
 
-# Load models into VRAM here so they can be warm between requests
 
-
-def handler(event):
+def handler(job):
     '''
-    This is the handler function that will be called by the serverless.
+    The handler function that will be called by the serverless.
     '''
-    print(event)
+    job_input = job['input']
 
-    # do the things
+    time.sleep(job_input.get('mock_delay', 0))
 
-    # return the output that you want to be returned like pre-signed URLs to output artifacts
-    return "Hello World"
+    if job_input.get('mock_error', False):
+        raise Exception('Mock error')
+
+    if job_input('mock_crash', False):
+        os._exit(1)
+
+    return job_input.get('mock_return', 'Hello World!')
 
 
 runpod.serverless.start({"handler": handler})
