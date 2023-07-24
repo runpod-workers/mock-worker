@@ -19,7 +19,7 @@ def handler(job):
     if job_input.get('mock_error', False):
         raise Exception('Mock error')
 
-    if job_input('mock_crash', False):
+    if job_input.get('mock_crash', False):
         os._exit(1)
 
     return job_input.get('mock_return', 'Hello World!')
