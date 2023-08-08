@@ -2,8 +2,8 @@ name: CD | Dev Docker Image
 
 on:
   push:
-    branches:
-      - "main"
+
+  workflow_dispatch:
 
 jobs:
   docker:
