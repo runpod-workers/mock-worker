@@ -70,12 +70,21 @@ def _side_effects(job_input):
 if __name__ == '__main__':
     # Parse the arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument('--generator', action='store_true',
+    parser.add_argument('--generator', action='store_true', default=False,
                         help='Starts serverless with the generator_handler')
+    parser.add_argument('--return_aggregate_stream', action='store_true', default=False,
+                        help='Aggregate the stream of generator_handler and return it as a list')
     args = parser.parse_args()
 
     # Start the serverless worker
     if args.generator:
-        runpod.serverless.start({"handler": generator_handler})
+        print('Starting serverless with generator_handler')
+        print(f"return_aggregate_stream: {args.return_aggregate_stream}")
 
-    runpod.serverless.start({"handler": handler})
+        runpod.serverless.start({
+            "handler": generator_handler,
+            "return_aggregate_stream": args.return_aggregate_stream
+        })
+
+    else:
+        runpod.serverless.start({"handler": handler})
