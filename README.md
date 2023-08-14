@@ -22,3 +22,24 @@
     }
 }
 ```
+
+### Generator Handler
+
+To test the generator handler override the docker command with the following:
+
+```bash
+python3 -u /handler.py --generator
+```
+
+To test multiple yeild outputs, set the `mock_return` to a list of values.
+
+```json
+{"input":
+    {
+        "mock_return": ["value1", "value2", "value3"],
+        "mock_delay": 0,
+        "mock_error": false,
+        "mock_crash": false
+    }
+}
+```
