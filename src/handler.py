@@ -90,10 +90,9 @@ if __name__ == '__main__':
                         help='Starts serverless with the async_generator_handler')
     parser.add_argument('--return_aggregate_stream', action='store_true', default=False,
                         help='Aggregate the stream of generator_handler and return it as a list')
-    args = parser.parse_args()
 
     # Pass the unknown arguments to the serverless
-    _, unknown = parser.parse_known_args()
+    args, unknown = parser.parse_known_args()
     sys.argv = [sys.argv[0]] + unknown
 
     # Start the serverless worker
