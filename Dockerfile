@@ -16,11 +16,11 @@ WORKDIR /
 
 # Install Python dependencies (Worker Template)
 COPY builder/requirements.txt /requirements.txt
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install --upgrade -r /requirements.txt --no-cache-dir && \
+RUN python -m pip install --upgrade pip && \
+    python -m pip install --upgrade -r /requirements.txt --no-cache-dir && \
     rm /requirements.txt
 
 # Add src files (Worker Template)
 ADD src .
 
-CMD python3 -u /handler.py
+CMD python -u /handler.py
