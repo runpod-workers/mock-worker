@@ -1,5 +1,5 @@
 # Base image
-FROM python:3.10
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
