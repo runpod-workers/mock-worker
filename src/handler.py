@@ -3,6 +3,7 @@ IMPORTANT: This file is only used for testing purposes.
 '''
 
 import os
+import sys
 import time
 import argparse
 
@@ -90,6 +91,10 @@ if __name__ == '__main__':
     parser.add_argument('--return_aggregate_stream', action='store_true', default=False,
                         help='Aggregate the stream of generator_handler and return it as a list')
     args = parser.parse_args()
+
+    # Pass the unknown arguments to the serverless
+    _, unknown = parser.parse_known_args()
+    sys.argv = [sys.argv[0]] + unknown
 
     # Start the serverless worker
     if args.generator:
