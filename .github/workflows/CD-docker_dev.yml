@@ -34,7 +34,7 @@ jobs:
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "DOCKER_TAG=dev" >> $GITHUB_ENV
           else
-            echo "DOCKER_TAG=$(echo ${{ github.event.pull_request.head.sha }} | cut -c 1-7)" >> $GITHUB_ENV
+            echo "DOCKER_TAG=$(echo ${{ github.sha }} | cut -c 1-7)" >> $GITHUB_ENV
           fi
 
       - name: Build and push
