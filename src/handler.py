@@ -65,6 +65,8 @@ def _side_effects(job_input):
     '''
     Modify the behavior of the handler based on the job input.
     '''
+    mock_external = job_input.get('mock_external', {})
+
     # Mock the duration of the job
     time.sleep(job_input.get('mock_delay', 0))
 
@@ -76,7 +78,7 @@ def _side_effects(job_input):
     if job_input.get('mock_error', False):
         raise Exception('Mock error')  # pylint: disable=broad-exception-raised
 
-    if job_input.get('mock_fail_job_done', False):
+    if mock_external.get('mock_fail_job_done', False):
         rp_http.JOB_DONE_URL = 'http://not_found'
 
     return job_input

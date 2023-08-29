@@ -22,7 +22,10 @@
         "mock_crash": false, // If true, the worker will crash (kills the processes)
         "mock_refresh": false, // If true, the refresh_worker flag is enabled.
 
-        "mock_fail_job_done": false, // If true, job will fail to return the job results.
+        "mock_external": {
+            "error_job_return": false, // If true, the job will fail to return the job results.
+        }
+
     }
 }
 ```
