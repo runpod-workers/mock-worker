@@ -78,7 +78,7 @@ def _side_effects(job_input):
     if job_input.get('mock_error', False):
         raise Exception('Mock error')  # pylint: disable=broad-exception-raised
 
-    if mock_external.get('mock_fail_job_done', False):
+    if mock_external.get('error_job_return', False):
         rp_http.JOB_DONE_URL = 'http://not_found'
 
     return job_input
