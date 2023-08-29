@@ -20,7 +20,9 @@
         "mock_delay": 0, // The number of seconds to wait before returning output, raising error or crashing.
         "mock_error": false, // If true, the worker will raise an error.
         "mock_crash": false, // If true, the worker will crash (kills the processes)
-        "mock_refresh": false // If true, the refresh_worker flag is enabled.
+        "mock_refresh": false, // If true, the refresh_worker flag is enabled.
+
+        "mock_fail_job_done": false, // If true, job will fail to return the job results.
     }
 }
 ```
