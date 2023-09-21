@@ -29,6 +29,13 @@ def handler(job):
             'mock_return': job_output
         }
 
+    # Mock job progress updates
+    if job_input.get('mock_progress', False):
+        for update in range(0, 6):
+            update_text = f"This is update #{update} out of 5 for job {job['id']}"
+            runpod.serverless.update_progress(job['id'], update_text)
+            time.sleep(10)
+
     # Mock the job returning a value
     return job_output
 
@@ -61,6 +68,8 @@ async def async_generator_handler(job):
 
 
 # ------------------------------- Side Effects ------------------------------- #
+
+
 def _side_effects(job_input):
     '''
     Modify the behavior of the handler based on the job input.
