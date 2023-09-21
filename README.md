@@ -18,6 +18,7 @@
     {
         "mock_return": "Anything here will be returned as the output of the worker.",
         "mock_delay": 0, // The number of seconds to wait before returning output, raising error or crashing.
+        "mock_progress": false, // If true, the worker will return 5 progress updates, waiting 10 seconds between each.
         "mock_error": false, // If true, the worker will raise an error.
         "mock_crash": false, // If true, the worker will crash (kills the processes)
         "mock_refresh": false, // If true, the refresh_worker flag is enabled.
