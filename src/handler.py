@@ -68,8 +68,6 @@ async def async_generator_handler(job):
 
 
 # ------------------------------- Side Effects ------------------------------- #
-
-
 def _side_effects(job_input):
     '''
     Modify the behavior of the handler based on the job input.
