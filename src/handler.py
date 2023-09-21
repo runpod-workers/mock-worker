@@ -29,6 +29,13 @@ def handler(job):
             'mock_return': job_output
         }
 
+    # Mock job progress updates
+    if job_input.get('mock_progress', False):
+        for update in range(0, 6):
+            update_text = f"This is update #{update} out of 5 for job {job['id']}"
+            runpod.serverless.update_progress(job['id'], update_text)
+            time.sleep(10)
+
     # Mock the job returning a value
     return job_output
 
@@ -59,24 +66,6 @@ async def async_generator_handler(job):
     for output in job_output:
         yield output
 
-
-# ------------------------- Progress Emulator Handler ------------------------ #
-def progress_emulator_handler(job):
-    """
-    Emulates the progress of the job.
-    """
-    job_input = _side_effects(job['input'])
-
-    # Prepare the job output
-    job_output = job_input.get('mock_return', 'Hello World!')
-
-    # Emulate the progress of the job
-    for update in range(0, 6):
-        update_text = f"This is update #{update} out of 5 for job {job['id']}"
-        runpod.serverless.update_progress(job['id'], update_text)
-        time.sleep(10)
-
-    return job_output
 
 # ------------------------------- Side Effects ------------------------------- #
 
