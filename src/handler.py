@@ -34,7 +34,7 @@ def handler(job):
         for update in range(0, 6):
             update_text = f"This is update #{update} out of 5 for job {job['id']}"
             runpod.serverless.progress_update(job, update_text)
-            time.sleep(10)
+            time.sleep(5)
 
     # Mock the job returning a value
     return job_output
