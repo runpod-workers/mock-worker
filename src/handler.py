@@ -17,6 +17,7 @@ def handler(job):
     '''
     The handler function that will be called by the serverless.
     '''
+    print(f"Starting job {job['id']}")
     job_input = _side_effects(job['input'])
 
     # Prepare the job output
