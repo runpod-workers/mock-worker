@@ -6,7 +6,6 @@ import os
 import sys
 import time
 import argparse
-import logging
 
 import runpod
 from runpod.serverless.modules import rp_http
