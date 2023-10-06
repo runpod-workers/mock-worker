@@ -7,7 +7,6 @@ import sys
 import time
 import argparse
 
-
 import runpod
 from runpod.serverless.modules import rp_http
 
@@ -17,7 +16,8 @@ def handler(job):
     '''
     The handler function that will be called by the serverless.
     '''
-    print(f"Starting job {job['id']}")
+    print(f"mock-worker | Starting job {job['id']}")
+
     job_input = _side_effects(job['input'])
 
     # Prepare the job output
