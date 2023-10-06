@@ -6,13 +6,17 @@ import os
 import sys
 import time
 import argparse
-
+import logging
 
 import runpod
 from runpod.serverless.modules import rp_http
 
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
 
 # ----------------------------- Standard Handler ----------------------------- #
+
+
 def handler(job):
     '''
     The handler function that will be called by the serverless.
