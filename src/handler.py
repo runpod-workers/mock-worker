@@ -13,6 +13,7 @@ from runpod.serverless.modules import rp_http
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger("urllib3").setLevel(logging.DEBUG)
 
 # ----------------------------- Standard Handler ----------------------------- #
 
@@ -21,7 +22,8 @@ def handler(job):
     '''
     The handler function that will be called by the serverless.
     '''
-    print(f"Starting job {job['id']}")
+    print(f"mock-worker | Starting job {job['id']}")
+
     job_input = _side_effects(job['input'])
 
     # Prepare the job output
