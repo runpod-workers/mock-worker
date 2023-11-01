@@ -10,6 +10,16 @@ import argparse
 import runpod
 from runpod.serverless.modules import rp_http
 
+MOCK_RETURN_DEFAULT = os.environ.get('MOCK_RETURN', ['Hello World!'])
+MOCK_DELAY_DEFAULT = os.environ.get('MOCK_DELAY', 0)
+MOCK_PROGRESS_DEFAULT = os.environ.get('MOCK_PROGRESS', {})
+
+MOCK_ERROR_DEFAULT = os.environ.get('MOCK_ERROR', False)
+MOCK_CRASH_DEFAULT = os.environ.get('MOCK_CRASH', False)
+MOCK_REFRESH_DEFAULT = os.environ.get('MOCK_REFRESH', False)
+
+MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
+
 
 # ----------------------------- Standard Handler ----------------------------- #
 def handler(job):
@@ -24,18 +34,17 @@ def handler(job):
     job_output = job_input.get('mock_return', 'Hello World!')
 
     # Mock enabled refresh_worker
-    if job_input.get('mock_refresh', False):
+    if job_input.get('mock_refresh', MOCK_REFRESH_DEFAULT):
         job_output = {
             'refresh_worker': True,
             'mock_return': job_output
         }
 
     # Mock job progress updates
-    if job_input.get('mock_progress', False):
-        for update in range(0, 6):
-            update_text = f"This is update #{update} out of 5 for job {job['id']}"
-            runpod.serverless.progress_update(job, update_text)
-            time.sleep(5)
+    if job_input.get('mock_progress', MOCK_PROGRESS_DEFAULT):
+        for update in job_input['mock_progress'].get('updates', []):
+            runpod.serverless.progress_update(job, update)
+            time.sleep(job_input['mock_progress'].get('updates', []))
 
     # Mock the job returning a value
     return job_output
@@ -49,7 +58,7 @@ def generator_handler(job):
     job_input = _side_effects(job['input'])
 
     # Prepare the job output
-    job_output = job_input.get('mock_return', ['Hello World!'])
+    job_output = job_input.get('mock_return', MOCK_RETURN_DEFAULT)
 
     for output in job_output:
         yield output
@@ -62,7 +71,7 @@ async def async_generator_handler(job):
     job_input = _side_effects(job['input'])
 
     # Prepare the job output
-    job_output = job_input.get('mock_return', ['Hello World!'])
+    job_output = job_input.get('mock_return', MOCK_RETURN_DEFAULT)
 
     for output in job_output:
         yield output
@@ -73,17 +82,17 @@ def _side_effects(job_input):
     '''
     Modify the behavior of the handler based on the job input.
     '''
-    mock_external = job_input.get('mock_external', {})
+    mock_external = job_input.get('mock_external', MOCK_EXTERNAL_DEFAULT)
 
     # Mock the duration of the job
-    time.sleep(job_input.get('mock_delay', 0))
+    time.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
 
     # Mock the job crashing the worker
-    if job_input.get('mock_crash', False):
+    if job_input.get('mock_crash', MOCK_CRASH_DEFAULT):
         os._exit(1)
 
     # Mock the job throwing an exception
-    if job_input.get('mock_error', False):
+    if job_input.get('mock_error', MOCK_ERROR_DEFAULT):
         raise Exception('Mock error')  # pylint: disable=broad-exception-raised
 
     if mock_external.get('error_job_return', False):
