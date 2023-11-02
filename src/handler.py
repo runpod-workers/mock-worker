@@ -74,6 +74,7 @@ async def async_generator_handler(job):
     job_output = job_input.get('mock_return', MOCK_RETURN_DEFAULT)
 
     for output in job_output:
+        time.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
         yield output
 
 
