@@ -34,7 +34,7 @@
 }
 ```
 
-### Generator Handler
+### Generator or Async Handler
 
 To test the generator handler override the docker command with the following:
 
@@ -42,11 +42,16 @@ To test the generator handler override the docker command with the following:
 python3 -u /handler.py --generator
 ```
 
-To test multiple yeild outputs, set the `mock_return` to a list of values.
+```bash
+python3 -u /handler.py --async_generator
+```
+
+To return the stream aggregation include `--return_aggregate_stream` argument.
 
 ```json
-{"input":
-    {
+# To test multiple yeild outputs, set the `mock_return` to a list of values.
+{
+    "input": {
         "mock_return": ["value1", "value2", "value3"],
         "mock_delay": 0,
         "mock_error": false,
