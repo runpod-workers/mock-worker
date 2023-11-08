@@ -8,6 +8,7 @@ import time
 import argparse
 
 import runpod
+from runpod import RunPodLogger
 from runpod.serverless.modules import rp_http
 
 MOCK_RETURN_DEFAULT = os.environ.get('MOCK_RETURN', ['Hello World!'])
@@ -20,6 +21,8 @@ MOCK_REFRESH_DEFAULT = os.environ.get('MOCK_REFRESH', False)
 
 MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
 
+log = RunPodLogger()
+
 
 # ----------------------------- Standard Handler ----------------------------- #
 def handler(job):
@@ -28,7 +31,7 @@ def handler(job):
     '''
     print(f"mock-worker | Starting job {job['id']}")
 
-    job_input = _side_effects(job['input'])
+    job_input = _side_effects(job)
 
     # Prepare the job output
     job_output = job_input.get('mock_return', 'Hello World!')
@@ -80,11 +83,24 @@ async def async_generator_handler(job):
 
 
 # ------------------------------- Side Effects ------------------------------- #
-def _side_effects(job_input):
+def _side_effects(job):
     '''
     Modify the behavior of the handler based on the job input.
     '''
-    mock_external = job_input.get('mock_external', MOCK_EXTERNAL_DEFAULT)
+    job_input = job['input']
+
+    # Mock json logs
+    for job_log in job_input.get('mock_logs', []):
+        log_level = job_log.get('level', "info").lower()
+
+        if log_level == 'debug':
+            log.info(job_log['message'], job_id=job['id'])
+        elif log_level == 'info':
+            log.info(job_log['message'], job_id=job['id'])
+        elif log_level == 'warn':
+            log.warn(job_log['message'], job_id=job['id'])
+        elif log_level == 'error':
+            log.error(job_log['message'], job_id=job['id'])
 
     # Mock the duration of the job
     time.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
@@ -97,6 +113,7 @@ def _side_effects(job_input):
     if job_input.get('mock_error', MOCK_ERROR_DEFAULT):
         raise Exception('Mock error')  # pylint: disable=broad-exception-raised
 
+    mock_external = job_input.get('mock_external', MOCK_EXTERNAL_DEFAULT)
     if mock_external.get('error_job_return', False):
         rp_http.JOB_DONE_URL = 'http://not_found'
 

@@ -28,8 +28,13 @@
 
         "mock_external": {
             "error_job_return": false, // If true, the job will fail to return the job results.
-        }
-
+        },
+        "mock_logs": [  // A list of log messages to generate, these are sent at the start of the job.
+            {
+                "level": "info", // The log level to use. Options: debug, info, warn, error
+                "message": "This is a log message." // The log message to send.
+            }
+        ]
     }
 }
 ```
