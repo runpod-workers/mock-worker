@@ -58,7 +58,7 @@ def generator_handler(job):
     '''
     Generator type handler.
     '''
-    job_input = _side_effects(job['input'])
+    job_input = _side_effects(job)
 
     # Prepare the job output
     job_output = job_input.get('mock_return', MOCK_RETURN_DEFAULT)
@@ -72,7 +72,7 @@ async def async_generator_handler(job):
     '''
     Async generator type handler.
     '''
-    job_input = _side_effects(job['input'])
+    job_input = _side_effects(job)
 
     # Prepare the job output
     job_output = job_input.get('mock_return', MOCK_RETURN_DEFAULT)
