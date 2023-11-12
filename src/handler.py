@@ -24,7 +24,12 @@ MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
 log = RunPodLogger()
 
 
+def concurrency_controller():
+    return 1
+
 # ----------------------------- Standard Handler ----------------------------- #
+
+
 def handler(job):
     '''
     The handler function that will be called by the serverless.
@@ -132,8 +137,6 @@ if __name__ == '__main__':
                         help='Starts serverless with the async_generator_handler')
     parser.add_argument('--return_aggregate_stream', action='store_true', default=False,
                         help='Aggregate the stream of generator_handler and return it as a list')
-    parser.add_argument('--concurrency_controller', action='store_true', default=False,
-                        help='Starts serverless with the concurrency_controller')
 
     # Pass the unknown arguments to the serverless
     args, unknown = parser.parse_known_args()
@@ -156,7 +159,7 @@ if __name__ == '__main__':
         runpod.serverless.start({
             "handler": async_generator_handler,
             "return_aggregate_stream": args.return_aggregate_stream,
-            "concurrency_controller": args.concurrency_controller
+            "concurrency_controller": concurrency_controller
         })
 
     else:
