@@ -63,7 +63,7 @@ def handler(job):
     if job_input.get('mock_progress', MOCK_PROGRESS_DEFAULT):
         for update in job_input['mock_progress'].get('updates', []):
             runpod.serverless.progress_update(job, update)
-            time.sleep(job_input['mock_progress'].get('updates', []))
+            time.sleep(job_input['mock_progress'].get('wait_time', 0))
 
     # Attempt to send progress updates after the job is done with thread
     if job_input.get('mock_delayed_progress', False):
