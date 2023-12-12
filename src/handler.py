@@ -25,12 +25,12 @@ MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
 log = RunPodLogger()
 
 
-def concurrency_controller():
+def concurrency_modifier():
+    """ Returns the concurrency modifier for the worker. """
     return 1
 
+
 # ----------------------------- Standard Handler ----------------------------- #
-
-
 def handler(job):
     '''
     The handler function that will be called by the serverless.
@@ -159,7 +159,7 @@ if __name__ == '__main__':
         runpod.serverless.start({
             "handler": async_generator_handler,
             "return_aggregate_stream": args.return_aggregate_stream,
-            "concurrency_controller": concurrency_controller
+            "concurrency_modifier": concurrency_modifier
         })
 
     else:
