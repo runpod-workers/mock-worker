@@ -5,6 +5,7 @@ IMPORTANT: This file is only used for testing purposes.
 import os
 import sys
 import time
+import asyncio
 import argparse
 
 import runpod
@@ -24,6 +25,11 @@ MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
 log = RunPodLogger()
 
 
+def concurrency_modifier():
+    """ Returns the concurrency modifier for the worker. """
+    return 1
+
+
 # ----------------------------- Standard Handler ----------------------------- #
 def handler(job):
     '''
@@ -32,6 +38,8 @@ def handler(job):
     print(f"mock-worker | Starting job {job['id']}")
 
     job_input = _side_effects(job)
+
+    time.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
 
     # Prepare the job output
     job_output = job_input.get('mock_return', 'Hello World!')
@@ -78,7 +86,7 @@ async def async_generator_handler(job):
     job_output = job_input.get('mock_return', MOCK_RETURN_DEFAULT)
 
     for output in job_output:
-        time.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
+        await asyncio.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
         yield output
 
 
@@ -101,9 +109,6 @@ def _side_effects(job):
             log.warn(job_log['message'], job_id=job['id'])
         elif log_level == 'error':
             log.error(job_log['message'], job_id=job['id'])
-
-    # Mock the duration of the job
-    time.sleep(job_input.get('mock_delay', MOCK_DELAY_DEFAULT))
 
     # Mock the job crashing the worker
     if job_input.get('mock_crash', MOCK_CRASH_DEFAULT):
@@ -153,7 +158,8 @@ if __name__ == '__main__':
 
         runpod.serverless.start({
             "handler": async_generator_handler,
-            "return_aggregate_stream": args.return_aggregate_stream
+            "return_aggregate_stream": args.return_aggregate_stream,
+            "concurrency_modifier": concurrency_modifier
         })
 
     else:
