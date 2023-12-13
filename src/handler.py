@@ -7,7 +7,6 @@ import sys
 import time
 import asyncio
 import argparse
-import threading
 
 import runpod
 from runpod import RunPodLogger
@@ -26,19 +25,12 @@ MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
 log = RunPodLogger()
 
 
-def concurrency_modifier():
+def concurrency_modifier(current_concurrency):
     """ Returns the concurrency modifier for the worker. """
-    return 1
+    return os.environ.get('CONCURRENCY_MODIFIER', current_concurrency)
 
-
-def delayed_progress_update(job):
-    time.sleep(5)
-    runpod.serverless.progress_update(job, {'progress': "sent after 5 seconds"})
-    print(f"mock-worker | Progress update sent for job {job['id']}")
 
 # ----------------------------- Standard Handler ----------------------------- #
-
-
 def handler(job):
     '''
     The handler function that will be called by the serverless.
@@ -64,10 +56,6 @@ def handler(job):
         for update in job_input['mock_progress'].get('updates', []):
             runpod.serverless.progress_update(job, update)
             time.sleep(job_input['mock_progress'].get('wait_time', 0))
-
-    # Attempt to send progress updates after the job is done with thread
-    if job_input.get('mock_delayed_progress', False):
-        threading.Thread(target=delayed_progress_update, args=(job,)).start()
 
     # Mock the job returning a value
     return job_output
