@@ -1,15 +1,13 @@
 <div align="center">
 
-<h1>Template | Worker</h1>
+<h1>Mock | Worker</h1>
 
 [![CI | Test Worker](https://github.com/runpod-workers/mock-worker/actions/workflows/CI-test_worker.yml/badge.svg)](https://github.com/runpod-workers/mock-worker/actions/workflows/CI-test_worker.yml)
 &nbsp;
 [![CD | Dev Docker Image](https://github.com/runpod-workers/mock-worker/actions/workflows/CD-docker_dev.yml/badge.svg)](https://github.com/runpod-workers/mock-worker/actions/workflows/CD-docker_dev.yml)
 
-🚀 | A simple worker that can be used as a starting point to build your own custom RunPod Endpoint API worker. [Docker Link](https://hub.docker.com/r/runpod/mock-worker)
+🦜 | A mock worker that can be used to emulate the behavior of different types of endpoints. [Docker Link](https://hub.docker.com/r/runpod/mock-worker)
 </div>
-
-
 
 ## Usage
 
