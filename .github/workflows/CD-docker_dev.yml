@@ -42,3 +42,12 @@ jobs:
         with:
           push: true
           tags: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMG }}:${{ env.DOCKER_TAG }}
+
+      - uses: actions/checkout@v3
+      - name: Run Tests
+        id: run-tests
+        uses: runpod/runpod-test-runner@v1
+        with:
+          image-tag: ${{ vars.DOCKERHUB_REPO }}/${{ vars.DOCKERHUB_IMG }}:dev
+          runpod-api-key: ${{ secrets.RUNPOD_API_KEY }}
+          request-timeout: 600
