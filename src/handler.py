@@ -25,9 +25,9 @@ MOCK_EXTERNAL_DEFAULT = os.environ.get('MOCK_EXTERNAL', {})
 log = RunPodLogger()
 
 
-def concurrency_modifier(current_concurrency):
+def concurrency_modifier(current_concurrency=1):
     """ Returns the concurrency modifier for the worker. """
-    return os.environ.get('CONCURRENCY_MODIFIER', current_concurrency)
+    return int(os.environ.get('CONCURRENCY_MODIFIER', current_concurrency))
 
 
 # ----------------------------- Standard Handler ----------------------------- #
