@@ -17,7 +17,7 @@
         "mock_return": "Anything here will be returned as the output of the worker.",
         "mock_delay": 0, // The number of seconds to wait before returning output, raising error or crashing. If generator is enabled, this is the delay between each yeild.
         "mock_progress": {
-            "updates": [],  // A list of progress updates to send back to the RunPod API.
+            "updates": [],  // A list of progress updates to send back to the Runpod API.
             "wait_time": 0 // The number of seconds to wait before sending a progress update.
         },
         "mock_error": false, // If true, the worker will raise an error.
